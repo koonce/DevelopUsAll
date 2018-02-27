@@ -2624,10 +2624,10 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 67ce51618e38753408d50bcf6a9f91fc, type: 3}
   - {fileID: 8300000, guid: ac9202e0f98f13d48914a85d2093803e, type: 3}
   - {fileID: 8300000, guid: ac9202e0f98f13d48914a85d2093803e, type: 3}
-  - {fileID: 8300000, guid: ac9202e0f98f13d48914a85d2093803e, type: 3}
-  - {fileID: 8300000, guid: ac9202e0f98f13d48914a85d2093803e, type: 3}
-  - {fileID: 8300000, guid: ac9202e0f98f13d48914a85d2093803e, type: 3}
-  - {fileID: 8300000, guid: ac9202e0f98f13d48914a85d2093803e, type: 3}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   timerSound: 0
   soundStuff: {fileID: 362459921}
 --- !u!81 &1446796723
@@ -3333,7 +3333,7 @@ TextMesh:
 
 
 
-    (press pink sound)'
+    (press green sound)'
   m_OffsetZ: 0
   m_CharacterSize: 0.02
   m_LineSpacing: 0.73

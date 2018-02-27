@@ -43,6 +43,23 @@ public class click : MonoBehaviour {
         Vector3 lookhere = new Vector3(-mouseInputY, mouseInputX, 0);
         transform.Rotate(lookhere);
 
+        if (Input.GetKey(KeyCode.D))
+        {
+            transform.Rotate(0, 5, 0);
+        }
+        if (Input.GetKey(KeyCode.A))
+        {
+            transform.Rotate(0, -5, 0);
+        }
+        if (Input.GetKey(KeyCode.W))
+        {
+            transform.Rotate(-5, 0, 0);
+        }
+        if (Input.GetKey(KeyCode.S))
+        {
+            transform.Rotate(5, 0, 0);
+        }
+
         Vector3 newRotation = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f);
         transform.eulerAngles = newRotation;
 
@@ -115,12 +132,14 @@ public class click : MonoBehaviour {
                     }
                     if (audio.isPlaying)
                     {
+                        Debug.Log("scene manager is not working");
                         SceneManager.LoadScene(1);
                     }
 
                         }
-                    else if (hit.transform.tag.StartsWith("button") && events[i])
+                    else if (hit.transform.tag.StartsWith("button") && gameStarted)
                 {
+                    Debug.Log("wrong button");
                     SceneManager.LoadScene(1);
                 }
                    /* if (hit.transform.tag == "button2") {
