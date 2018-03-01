@@ -38,10 +38,10 @@ public class click : MonoBehaviour {
         correct[4] = "button6";
         
 
-        float mouseInputX = Input.GetAxis("Mouse X");
-        float mouseInputY = Input.GetAxis("Mouse Y");
-        Vector3 lookhere = new Vector3(-mouseInputY, mouseInputX, 0);
-        transform.Rotate(lookhere);
+       // float mouseInputX = Input.GetAxis("Mouse X");
+       // float mouseInputY = Input.GetAxis("Mouse Y");
+       // Vector3 lookhere = new Vector3(-mouseInputY, mouseInputX, 0);
+       // transform.Rotate(lookhere);
 
         if (Input.GetKey(KeyCode.D))
         {
