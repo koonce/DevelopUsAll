@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class lighter : MonoBehaviour
 {
-    public GameObject lighting, rope;
+    public GameObject lighting, rope, player;
     public float timer = 10;
     public bool lightOn = false;
     // Use this for initialization
@@ -22,6 +22,8 @@ public class lighter : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        int strikes = player.GetComponent<click>().STRIKES;
+
         if (!rope.activeSelf)
         {
             gameStarted = true;
@@ -62,9 +64,12 @@ public class lighter : MonoBehaviour
 
             if (timer <= 0)
             {
-                SceneManager.LoadScene(1);
+                strikes++;
+                timer = 10;
+                lightOn = false;
             }
         }
+        player.GetComponent<click>().STRIKES = strikes;
     }
 
 }

@@ -17,6 +17,10 @@ public class click : MonoBehaviour {
     public float timerSound;
     bool gameStarted = false;
     public Slider soundStuff;
+    public int STRIKES = 0;
+
+    public GameObject[] strikers = new GameObject[2];
+
 
 
     // Use this for initialization
@@ -25,10 +29,11 @@ public class click : MonoBehaviour {
         i = 0;
         events[i] = false;
         }
-  
+
 
     // Update is called once per frame
-    void Update() {
+    void Update()
+    {
         audio = GetComponent<AudioSource>();
 
         correct[0] = "button";
@@ -36,12 +41,13 @@ public class click : MonoBehaviour {
         correct[2] = "button5";
         correct[3] = "button3";
         correct[4] = "button6";
-        
 
-       // float mouseInputX = Input.GetAxis("Mouse X");
-       // float mouseInputY = Input.GetAxis("Mouse Y");
-       // Vector3 lookhere = new Vector3(-mouseInputY, mouseInputX, 0);
-       // transform.Rotate(lookhere);
+
+        // float mouseInputX = Input.GetAxis("Mouse X");
+        // float mouseInputY = Input.GetAxis("Mouse Y");
+        // Vector3 lookhere = new Vector3(-mouseInputY, mouseInputX, 0);
+        // transform.Rotate(lookhere);
+        Debug.Log(transform.rotation.x);
 
         if (Input.GetKey(KeyCode.D))
         {
@@ -51,11 +57,12 @@ public class click : MonoBehaviour {
         {
             transform.Rotate(0, -5, 0);
         }
-        if (Input.GetKey(KeyCode.W))
+        if (Input.GetKey(KeyCode.W) && transform.rotation.x < .5f)
         {
             transform.Rotate(-5, 0, 0);
+           
         }
-        if (Input.GetKey(KeyCode.S))
+        if (Input.GetKey(KeyCode.S) && transform.rotation.x > -.5f)
         {
             transform.Rotate(5, 0, 0);
         }
@@ -65,7 +72,8 @@ public class click : MonoBehaviour {
 
         if (timerSound >= 20)
         {
-            SceneManager.LoadScene(1);
+            STRIKES++;
+            timerSound = 0;
         }
 
         if (events[i])
@@ -76,20 +84,20 @@ public class click : MonoBehaviour {
                 timer -= 1 * Time.deltaTime;
                 if (timer <= 0)
                 {
-                    SceneManager.LoadScene(1);
-                    events[i] = false;
+                    STRIKES++;
+                    i++;
                 }
             }
         }
 
-       /* if (eventTwo) {
-            timer -= 1 * Time.deltaTime;
-            if (timer <= 0) {
-                youLose.SetActive(true);
-                eventTwo = false;
-                }
-            }
-            */
+        /* if (eventTwo) {
+             timer -= 1 * Time.deltaTime;
+             if (timer <= 0) {
+                 youLose.SetActive(true);
+                 eventTwo = false;
+                 }
+             }
+             */
 
         //    Debug.Log("time:" + timer);
 
@@ -98,11 +106,13 @@ public class click : MonoBehaviour {
             timerSound += 1 * Time.deltaTime;
         }
 
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Input.GetMouseButtonDown(0)) {
-                if (Physics.Raycast(ray, out hit, 100.0f)) {
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (Physics.Raycast(ray, out hit, 100.0f))
+            {
 
                 if (hit.transform.tag == "rope")
                 {
@@ -113,8 +123,9 @@ public class click : MonoBehaviour {
                     gameStarted = true;
                 }
 
-                
-                    if (hit.transform.tag == correct[i]) {
+
+                if (hit.transform.tag == correct[i])
+                {
                     if (!audio.isPlaying)
                     {
                         if (events[i])
@@ -127,53 +138,70 @@ public class click : MonoBehaviour {
                             events[i] = true;
                             events[i - 1] = false;
 
-                            
+
                         }
                     }
                     if (audio.isPlaying)
                     {
                         Debug.Log("scene manager is not working");
-                        SceneManager.LoadScene(1);
+                        STRIKES++;
                     }
 
-                        }
-                    else if (hit.transform.tag.StartsWith("button") && gameStarted)
+                }
+                else if (hit.transform.tag.StartsWith("button") && gameStarted)
                 {
                     Debug.Log("wrong button");
-                    SceneManager.LoadScene(1);
+                    STRIKES++;
                 }
-                   /* if (hit.transform.tag == "button2") {
-                        if (events[1]) 
-                        {
-                            Debug.Log("you got it again!");
-                        SceneManager.LoadScene(2);
-                         //   events[1] = false;
-                        }
-                    }
-                    */
-                    
-                    
+                /* if (hit.transform.tag == "button2") {
+                     if (events[1]) 
+                     {
+                         Debug.Log("you got it again!");
+                     SceneManager.LoadScene(2);
+                      //   events[1] = false;
+                     }
+                 }
+                 */
 
-                }
+
+
             }
+        }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
             if (Physics.Raycast(ray, out hit, 100.0f))
             {
                 if (hit.transform.tag == "crew" && timerSound >= 0)
                 {
-                    Debug.Log("PRESSED SHIFT");
+                    Debug.Log("Q");
                     timerSound -= 4f;
                 }
             }
-        } 
         }
+
+
+    }
 
     private void FixedUpdate()
     {
         soundStuff.value = timerSound;
-        if (i==5 && !audio.isPlaying)
+
+        if (STRIKES == 1)
+        {
+            strikers[0].SetActive(true);
+        }
+        if (STRIKES == 2)
+        {
+            strikers[1].SetActive(true);
+        }
+
+        if (STRIKES == 3)
+        {
+            SceneManager.LoadScene(1);
+        }
+
+        if (i == 5 && !audio.isPlaying)
         {
             SceneManager.LoadScene(2);
         }

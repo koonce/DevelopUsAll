@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class crewNoise : MonoBehaviour {
     AudioSource audio;
     public Slider volumeControl;
-    public float multiplier = .04f;
+    public float multiplier = .05f;
 
 	// Use this for initialization
 	void Start () {
