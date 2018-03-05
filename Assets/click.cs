@@ -19,6 +19,7 @@ public class click : MonoBehaviour {
     public Slider soundStuff;
     public int STRIKES = 0;
 
+
     public GameObject[] strikers = new GameObject[2];
 
 
@@ -47,7 +48,7 @@ public class click : MonoBehaviour {
         // float mouseInputY = Input.GetAxis("Mouse Y");
         // Vector3 lookhere = new Vector3(-mouseInputY, mouseInputX, 0);
         // transform.Rotate(lookhere);
-        Debug.Log(transform.rotation.x);
+        //Debug.Log(transform.rotation.x);
 
         if (Input.GetKey(KeyCode.D))
         {

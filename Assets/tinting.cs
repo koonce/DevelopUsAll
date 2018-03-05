@@ -49,11 +49,16 @@ public class tinting : MonoBehaviour {
             if (hit.transform.tag == tags[0])
             {
                 interactable[0].GetComponent<MeshRenderer>().material.color = tint.color;
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Debug.Log("HEY!");
+                }
             }
             else
             {
                 interactable[0].GetComponent<MeshRenderer>().material.color = originalColor[0].color;
             }
+
             if (hit.transform.tag == tags[1])
             {
                 interactable[1].GetComponent<MeshRenderer>().material.color = tint.color;
@@ -62,6 +67,7 @@ public class tinting : MonoBehaviour {
             {
                 interactable[1].GetComponent<MeshRenderer>().material.color = originalColor[1].color;
             }
+
             if (hit.transform.tag == tags[2])
             {
                 interactable[2].GetComponent<MeshRenderer>().material.color = tint.color;
