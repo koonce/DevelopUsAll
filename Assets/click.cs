@@ -6,18 +6,19 @@ using UnityEngine.UI;
 
 public class click : MonoBehaviour {
 
-    public bool[] events = new bool[10];
+    public bool[] events = new bool[25];
     public float timer = 7;
-    public GameObject roped, instructions;
-   public int i;
+    public GameObject roped, instructions, stagelight;
+   public int i, j;
     AudioSource audio;
-    string[] correct = new string[10];
-    public AudioClip[] nextLine = new AudioClip[10];
+    string[] correct = new string[25];
+    public AudioClip[] nextLine = new AudioClip[5];
     bool[] hasPlayed = new bool[10];
     public float timerSound;
     bool gameStarted = false;
     public Slider soundStuff;
     public int STRIKES = 0;
+    public GameObject[] hamlet = new GameObject[5];
 
 
     public GameObject[] strikers = new GameObject[2];
@@ -29,6 +30,7 @@ public class click : MonoBehaviour {
         hasPlayed[i] = false;
         i = 0;
         events[i] = false;
+        j = 0;
         }
 
 
@@ -38,10 +40,29 @@ public class click : MonoBehaviour {
         audio = GetComponent<AudioSource>();
 
         correct[0] = "button";
-        correct[1] = "button2";
-        correct[2] = "button5";
-        correct[3] = "button3";
-        correct[4] = "button6";
+        correct[1] = "button5";
+        correct[2] = "button6";
+        correct[3] = "button4";
+        correct[4] = "button2";
+        correct[5] = "button5";
+        correct[6] = "button6";
+        correct[7] = "button";
+        correct[8] = "button5";
+        correct[9] = "button3";
+        correct[10] = "button4";
+        correct[11] = "button2";
+        correct[12] = "button5";
+        correct[13] = "button2";
+        correct[14] = "button3";
+        correct[15] = "button4";
+        correct[16] = "button5";
+        correct[17] = "button2";
+        correct[18] = "button4";
+        correct[19] = "button6";
+        correct[20] = "button2";
+        correct[21] = "button5";
+        correct[22] = "button4";
+        correct[23] = "button2";
 
 
         // float mouseInputX = Input.GetAxis("Mouse X");
@@ -58,12 +79,12 @@ public class click : MonoBehaviour {
         {
             transform.Rotate(0, -5, 0);
         }
-        if (Input.GetKey(KeyCode.W) && transform.rotation.x < .5f)
+        if (Input.GetKey(KeyCode.W))
         {
             transform.Rotate(-5, 0, 0);
            
         }
-        if (Input.GetKey(KeyCode.S) && transform.rotation.x > -.5f)
+        if (Input.GetKey(KeyCode.S))
         {
             transform.Rotate(5, 0, 0);
         }
@@ -124,6 +145,32 @@ public class click : MonoBehaviour {
                     gameStarted = true;
                 }
 
+                if (hit.transform.tag == "Rpencil" && j < hamlet.Length)
+                {
+                    hamlet[j+1].SetActive(true);
+                    hamlet[j].SetActive(false);
+                    j++;
+                }
+                if (hit.transform.tag == "Lpencil" && j > 0)
+                {
+                    hamlet[j - 1].SetActive(true);
+                    hamlet[j].SetActive(false);
+                    j--;
+                }
+
+                if (hit.transform.tag == "button4")
+                {
+                    stagelight.GetComponent<Light>().color = Color.red;
+                }
+                if (hit.transform.tag == "button5")
+                {
+                    stagelight.GetComponent<Light>().color = Color.blue;
+                }
+                if (hit.transform.tag == "button6")
+                {
+                    stagelight.GetComponent<Light>().color = Color.green;
+                }
+
 
                 if (hit.transform.tag == correct[i])
                 {
@@ -180,6 +227,10 @@ public class click : MonoBehaviour {
                 }
             }
         }
+        if (i == 24 && !audio.isPlaying)
+        {
+            SceneManager.LoadScene(2);
+        }
 
 
     }
@@ -202,10 +253,6 @@ public class click : MonoBehaviour {
             SceneManager.LoadScene(1);
         }
 
-        if (i == 5 && !audio.isPlaying)
-        {
-            SceneManager.LoadScene(2);
-        }
     }
 
     void listen()
@@ -214,6 +261,7 @@ public class click : MonoBehaviour {
         {
             audio.PlayOneShot(nextLine[i]);
             hasPlayed[i] = true;
+            Debug.Log("should have played");
         }
     }
     }

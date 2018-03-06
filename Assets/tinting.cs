@@ -7,6 +7,7 @@ public class tinting : MonoBehaviour {
     public GameObject[] interactable = new GameObject[6];
     public Material tint;
     string[] tags = new string[8];
+    public GameObject Lpencil, LpencilTint, Rpencil, RpencilTint;
 
     int i;
 
@@ -102,8 +103,28 @@ public class tinting : MonoBehaviour {
             }
 
 
+            if (hit.transform.tag == "Lpencil")
+            {
+                LpencilTint.SetActive(true);
+                Lpencil.SetActive(false);
+                Debug.Log("pencil baby");
+            }
+            else
+            {
+                Lpencil.SetActive(true);
+                LpencilTint.SetActive(false);
+            }
 
-
+            if (hit.transform.tag == "Rpencil")
+            {
+                RpencilTint.SetActive(true);
+                Rpencil.SetActive(false);
+            }
+            else
+            {
+                Rpencil.SetActive(true);
+                RpencilTint.SetActive(false);
+            }
 
 
         }
