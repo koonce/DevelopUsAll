@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class lighter : MonoBehaviour
 {
-    public GameObject lighting, rope, player;
-    public float timer = 10;
+    public GameObject lighting, rope, rope2, player, gameStarter;
+    public float timer = 20;
     public bool lightOn = false;
     // Use this for initialization
     public Slider timerFeedback;
@@ -16,7 +16,7 @@ public class lighter : MonoBehaviour
 
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame
@@ -24,7 +24,7 @@ public class lighter : MonoBehaviour
     {
         int strikes = player.GetComponent<click>().STRIKES;
 
-        if (!rope.activeSelf)
+        if (!gameStarter.activeSelf)
         {
             gameStarted = true;
         }
@@ -56,7 +56,7 @@ public class lighter : MonoBehaviour
             if (!lightOn)
             {
                 lighting.SetActive(false);
-                if (timer <= 10)
+                if (timer <= 20)
                 {
                     timer += 1 * Time.deltaTime;
                 }
@@ -65,7 +65,7 @@ public class lighter : MonoBehaviour
             if (timer <= 0)
             {
                 strikes++;
-                timer = 10;
+                timer = 20;
                 lightOn = false;
             }
         }

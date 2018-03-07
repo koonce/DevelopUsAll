@@ -8,18 +8,24 @@ public class click : MonoBehaviour {
 
     public bool[] events = new bool[25];
     public float timer = 7;
-    public GameObject roped, instructions, stagelight;
+    public GameObject roped, roped2, gameStarter, instructions, stagelight, defaultScript, scriptLight;
    public int i, j;
     AudioSource audio;
     string[] correct = new string[25];
     public AudioClip[] nextLine = new AudioClip[5];
-    bool[] hasPlayed = new bool[10];
+    bool[] hasPlayed = new bool[25];
     public float timerSound;
     bool gameStarted = false;
     public Slider soundStuff;
     public int STRIKES = 0;
     public GameObject[] hamlet = new GameObject[5];
+    public int moveMultiplier;
+    float k = 0;
+    public float speed;
 
+    public GameObject cursor;
+
+    public float mouseSensitivity;
 
     public GameObject[] strikers = new GameObject[2];
 
@@ -37,6 +43,7 @@ public class click : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
+        Cursor.visible = false;
         audio = GetComponent<AudioSource>();
 
         correct[0] = "button";
@@ -62,43 +69,49 @@ public class click : MonoBehaviour {
         correct[20] = "button2";
         correct[21] = "button5";
         correct[22] = "button4";
-        correct[23] = "button2";
 
 
-        // float mouseInputX = Input.GetAxis("Mouse X");
-        // float mouseInputY = Input.GetAxis("Mouse Y");
-        // Vector3 lookhere = new Vector3(-mouseInputY, mouseInputX, 0);
-        // transform.Rotate(lookhere);
+         float mouseInputX = Input.GetAxis("Mouse X");
+         float mouseInputY = Input.GetAxis("Mouse Y");
+         Vector3 lookhere = new Vector3(-mouseInputY * Time.deltaTime * mouseSensitivity, mouseInputX * Time.deltaTime * mouseSensitivity, 0f);
+         transform.Rotate(lookhere);
         //Debug.Log(transform.rotation.x);
 
+        /*
         if (Input.GetKey(KeyCode.D))
         {
-            transform.Rotate(0, 5, 0);
+            transform.Rotate(0, moveMultiplier * Time.deltaTime, 0);
         }
         if (Input.GetKey(KeyCode.A))
         {
-            transform.Rotate(0, -5, 0);
+            transform.Rotate(0, -moveMultiplier * Time.deltaTime, 0);
         }
         if (Input.GetKey(KeyCode.W))
         {
-            transform.Rotate(-5, 0, 0);
-           
+            transform.Rotate(-moveMultiplier * Time.deltaTime, 0, 0);
+            k++;
         }
         if (Input.GetKey(KeyCode.S))
         {
-            transform.Rotate(5, 0, 0);
+            transform.Rotate(moveMultiplier * Time.deltaTime, 0, 0);
+            k--;
         }
+        */
+       //Debug.Log(k);
+       // Debug.Log(transform.eulerAngles.x);
 
         Vector3 newRotation = new Vector3(transform.eulerAngles.x, transform.eulerAngles.y, 0f);
         transform.eulerAngles = newRotation;
 
-        if (timerSound >= 20)
+       // Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+        if (timerSound >= 30)
         {
             STRIKES++;
             timerSound = 0;
         }
 
-        if (events[i])
+        if (events[i] && i < 23)
         {
             listen();
             if (!audio.isPlaying)
@@ -108,8 +121,24 @@ public class click : MonoBehaviour {
                 {
                     STRIKES++;
                     i++;
+                    events[i] = true;
+                    events[i - 1] = false;
                 }
             }
+        }
+
+        if (events[23] || events[24])
+        {
+            listen();
+            if (!audio.isPlaying && hasPlayed[i])
+            {
+                i++;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            transform.Rotate(0f, 180f, 0f);
         }
 
         /* if (eventTwo) {
@@ -129,17 +158,28 @@ public class click : MonoBehaviour {
         }
 
         RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = new Ray(transform.position, transform.forward); 
+        //Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        if (Input.GetMouseButtonDown(0))
+        if (Physics.Raycast(ray, out hit, 100.0f))
+        {
+            if (hit.transform.tag == "button")
+            {
+                Debug.Log("cursor works!");
+            }
+        }
+
+            if (Input.GetMouseButtonDown(0))
         {
             if (Physics.Raycast(ray, out hit, 100.0f))
             {
 
                 if (hit.transform.tag == "rope")
                 {
-                    roped.SetActive(false);
-                    instructions.SetActive(false);
+                    gameStarter.SetActive(false);
+                    scriptLight.SetActive(false);
+                    hamlet[0].SetActive(true);
+                    defaultScript.SetActive(false);
                     events[i] = true;
                     Debug.Log("game has started");
                     gameStarted = true;
@@ -193,6 +233,10 @@ public class click : MonoBehaviour {
                     {
                         Debug.Log("scene manager is not working");
                         STRIKES++;
+                        audio.Stop();
+                        i++;
+                        events[i] = true;
+                        events[i - 1] = false;
                     }
 
                 }
@@ -200,6 +244,9 @@ public class click : MonoBehaviour {
                 {
                     Debug.Log("wrong button");
                     STRIKES++;
+                    i++;
+                    events[i] = true;
+                    events[i - 1] = false;
                 }
                 /* if (hit.transform.tag == "button2") {
                      if (events[1]) 
@@ -227,9 +274,18 @@ public class click : MonoBehaviour {
                 }
             }
         }
-        if (i == 24 && !audio.isPlaying)
+
+        if (Input.GetKeyDown(KeyCode.D))
+               {
+            hamlet[j + 1].SetActive(true);
+            hamlet[j].SetActive(false);
+            j++;
+        }
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            SceneManager.LoadScene(2);
+            hamlet[j - 1].SetActive(true);
+            hamlet[j].SetActive(false);
+            j--;
         }
 
 
@@ -237,20 +293,29 @@ public class click : MonoBehaviour {
 
     private void FixedUpdate()
     {
+        if (i == 25 && !audio.isPlaying)
+        {
+            SceneManager.LoadScene(2);
+        }
         soundStuff.value = timerSound;
 
         if (STRIKES == 1)
         {
-            strikers[0].SetActive(true);
+            strikers[0].SetActive(false);
         }
         if (STRIKES == 2)
         {
-            strikers[1].SetActive(true);
+            strikers[1].SetActive(false);
         }
 
         if (STRIKES == 3)
         {
             SceneManager.LoadScene(1);
+        }
+
+        if (Input.GetKey(KeyCode.R))
+        {
+            Time.timeScale = 2f;
         }
 
     }

@@ -7,7 +7,7 @@ public class tinting : MonoBehaviour {
     public GameObject[] interactable = new GameObject[6];
     public Material tint;
     string[] tags = new string[8];
-    public GameObject Lpencil, LpencilTint, Rpencil, RpencilTint;
+    public GameObject Lpencil, LpencilTint, Rpencil, RpencilTint, rope, ropeTint;
 
     int i;
 
@@ -27,7 +27,8 @@ public class tinting : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = new Ray(transform.position, transform.forward);
+        //Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
         /*
         if (Physics.Raycast(ray, out hit, 100.0f))
@@ -38,10 +39,10 @@ public class tinting : MonoBehaviour {
             }
         }
         */
-            
-            //TINT HOPEFULLY
-            // Material newMaterial = new Material(Shader.Find("Wha)"));
-            Material colorChange = interactable[i].GetComponent<MeshRenderer>().material;
+
+        //TINT HOPEFULLY
+        // Material newMaterial = new Material(Shader.Find("Wha)"));
+        Material colorChange = interactable[i].GetComponent<MeshRenderer>().material;
        // for(i = 0; i < tags.Length; i++)
     //    {
             if (Physics.Raycast(ray, out hit, 100.0f))
@@ -126,6 +127,16 @@ public class tinting : MonoBehaviour {
                 RpencilTint.SetActive(false);
             }
 
+            if (hit.transform.tag == "rope")
+            {
+                ropeTint.SetActive(true);
+                rope.SetActive(false);
+            }
+            else
+            {
+                rope.SetActive(true);
+                ropeTint.SetActive(false);
+            }
 
         }
 

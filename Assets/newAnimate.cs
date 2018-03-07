@@ -23,7 +23,7 @@ public class newAnimate : MonoBehaviour {
 
                 if (hit.transform.tag == "button")
                 {
-                    Debug.Log("we hit it");
+                //    Debug.Log("we hit it");
                 }
             }
         }

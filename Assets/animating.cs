@@ -4,10 +4,12 @@ using UnityEngine;
 
 public class animating : MonoBehaviour {
 
+    AudioSource audio;
+    public AudioClip footsteps, drama, sword, shh;
 
     // Use this for initialization
     void Start () {
-		
+        audio = GetComponent<AudioSource>();
 	}
 
     // Update is called once per frame
@@ -15,7 +17,8 @@ public class animating : MonoBehaviour {
     {
       //  Animation anim = GetComponent<Animation>();
         RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        // Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        Ray ray = new Ray(transform.position, transform.forward); 
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -27,17 +30,20 @@ public class animating : MonoBehaviour {
                    // Debug.Log("fuck");
                     //
                     hit.transform.GetComponent<Animator>().SetTrigger("clicked");
+                    audio.PlayOneShot(footsteps);
                     
                 }
 
                 if (hit.transform.tag == "button2")
                 {
                     hit.transform.GetComponent<Animator>().SetTrigger("clicked");
+                    audio.PlayOneShot(drama, .5f);
                 }
 
                 if (hit.transform.tag == "button3")
                 {
                     hit.transform.GetComponent<Animator>().SetTrigger("clicked");
+                    audio.PlayOneShot(sword);
                 }
 
                 if (hit.transform.tag == "button4")
@@ -55,6 +61,11 @@ public class animating : MonoBehaviour {
                     hit.transform.GetComponent<Animator>().SetTrigger("clicked");
                 }
             }
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            audio.PlayOneShot(shh, .5f);
         }
     }
 }
