@@ -29,6 +29,12 @@ public class click : MonoBehaviour {
 
     public GameObject[] strikers = new GameObject[2];
 
+    float xxx = 0f;
+    float yyy = 0f;
+
+    public AudioClip record;
+    bool[] recordHasPlayed = new bool[2];
+
 
 
     // Use this for initialization
@@ -37,12 +43,15 @@ public class click : MonoBehaviour {
         i = 0;
         events[i] = false;
         j = 0;
+        recordHasPlayed[0] = false;
+        recordHasPlayed[1] = false;
         }
 
 
     // Update is called once per frame
     void Update()
     {
+        Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
         audio = GetComponent<AudioSource>();
 
@@ -73,11 +82,22 @@ public class click : MonoBehaviour {
 
          float mouseInputX = Input.GetAxis("Mouse X");
          float mouseInputY = Input.GetAxis("Mouse Y");
-         Vector3 lookhere = new Vector3(-mouseInputY * Time.deltaTime * mouseSensitivity, mouseInputX * Time.deltaTime * mouseSensitivity, 0f);
+
+
+    //    yyy += mouseSensitivity * Input.GetAxis("Mouse X") * Time.deltaTime;
+     //    xxx -= mouseSensitivity * Input.GetAxis("Mouse Y") * Time.deltaTime;
+
+      //  Vector3 lookhere = new Vector3(xxx, yyy, 0f);
+
+
+        Vector3 lookhere = new Vector3(-mouseInputY * Time.deltaTime * mouseSensitivity, mouseInputX * Time.deltaTime * mouseSensitivity, 0f);
          transform.Rotate(lookhere);
+
+    
+       // transform.eulerAngles = lookhere;
         //Debug.Log(transform.rotation.x);
 
-        /*
+        
         if (Input.GetKey(KeyCode.D))
         {
             transform.Rotate(0, moveMultiplier * Time.deltaTime, 0);
@@ -89,14 +109,12 @@ public class click : MonoBehaviour {
         if (Input.GetKey(KeyCode.W))
         {
             transform.Rotate(-moveMultiplier * Time.deltaTime, 0, 0);
-            k++;
         }
         if (Input.GetKey(KeyCode.S))
         {
             transform.Rotate(moveMultiplier * Time.deltaTime, 0, 0);
-            k--;
         }
-        */
+        
        //Debug.Log(k);
        // Debug.Log(transform.eulerAngles.x);
 
@@ -275,17 +293,20 @@ public class click : MonoBehaviour {
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.D))
-               {
-            hamlet[j + 1].SetActive(true);
-            hamlet[j].SetActive(false);
-            j++;
-        }
-        if (Input.GetKeyDown(KeyCode.A))
+        if (gameStarted)
         {
-            hamlet[j - 1].SetActive(true);
-            hamlet[j].SetActive(false);
-            j--;
+            if (Input.GetKeyDown(KeyCode.C) && j < hamlet.Length)
+            {
+                hamlet[j + 1].SetActive(true);
+                hamlet[j].SetActive(false);
+                j++;
+            }
+            if (Input.GetKeyDown(KeyCode.Z) && j > 0f)
+            {
+                hamlet[j - 1].SetActive(true);
+                hamlet[j].SetActive(false);
+                j--;
+            }
         }
 
 
@@ -301,10 +322,20 @@ public class click : MonoBehaviour {
 
         if (STRIKES == 1)
         {
+            if (!recordHasPlayed[0])
+            {
+                audio.PlayOneShot(record);
+                recordHasPlayed[0] = true;
+            }
             strikers[0].SetActive(false);
         }
         if (STRIKES == 2)
         {
+            if (!recordHasPlayed[1])
+            {
+                audio.PlayOneShot(record);
+                recordHasPlayed[1] = true;
+            }
             strikers[1].SetActive(false);
         }
 
@@ -329,4 +360,6 @@ public class click : MonoBehaviour {
             Debug.Log("should have played");
         }
     }
+
+
     }
